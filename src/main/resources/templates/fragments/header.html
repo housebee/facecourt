@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1" />
+<title>com.headerr</title>
+</head>
+<body>
+	<div th:fragment="header">
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" th:href="@{/}"><span
+						th:text="#{com.brand.name}"></span></a>
+				</div>
+				<p class="navbar-text navbar-right">
+					<span sec:authentication="name">Username</span> &nbsp; <a
+						th:href="@{/logout}"><span th:text="#{com.home.logout}">Logout</span></a>&nbsp;
+					&nbsp; &nbsp;
+				</p>
+			</div>
+			<!-- /.container-fluid -->
+		</nav>
+	</div>
+</body>
+</html>
