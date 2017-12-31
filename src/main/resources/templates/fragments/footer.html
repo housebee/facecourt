@@ -2,16 +2,22 @@
 <html>
 <head>
 <meta charset="ISO-8859-1" />
-<title>com.footer</title>
+<title>face court</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 	<div th:fragment="footer">
-		<footer class="navbar navbar-fixed-bottom">
+		<footer class="navbar">
 			<!--Copyright-->
 			<div class="footer-copyright text-center">
 				<div class="container-fluid">
 					<span th:text="#{footer.copyright}">© 2017 Copyright: </span> <a
-						href="https://www.facecourt.com"> <span
+						href="/"> <span
 						th:text="#{com.home.url}">facecourt.com</span></a>
 				</div>
 			</div>

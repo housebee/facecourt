@@ -11,4 +11,4 @@
 #
 # Spring Boot has problem with Eclipse, it cannot stop the embedded tomcat server.
 # 
-# Therefore, run the application with DOS command as "mvn sprint-boot:run"
+# Therefore, run the application with DOS command as "mvn spring-boot:run"
