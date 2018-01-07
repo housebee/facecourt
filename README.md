@@ -43,12 +43,14 @@ Configure the app.yaml descriptor
 The app.yaml descriptor is used to describe URL dispatch and resource requirements. This example sets manual_scaling to 1 to minimize possible costs. These settings should be revisited for production use.
 
 Run the application locally
-Set the correct Cloud SDK project via gcloud config set project YOUR_PROJECT to the ID of your application.
+Set the correct Cloud SDK project via "gcloud config set project open-court" to the ID of your application.
 Run mvn spring-boot:run
 Visit http://localhost:8080
+
 Deploy to App Engine flexible environment
 mvn appengine:deploy
-Visit http://YOUR_PROJECT.appspot.com.
+
+Visit http://open-court.appspot.com.
 Note that deployment to the App Engine flexible environment requires the new com.google.cloud.tools:appengine-maven-plugin plugin.
 
 Java is a registered trademark of Oracle Corporation and/or its affiliates.
