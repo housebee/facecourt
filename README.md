@@ -50,7 +50,12 @@ Visit http://localhost:8080
 Deploy to App Engine flexible environment
 mvn appengine:deploy
 
+Monitor the app server log
+gcloud app logs tail
+
 Visit http://open-court.appspot.com.
 Note that deployment to the App Engine flexible environment requires the new com.google.cloud.tools:appengine-maven-plugin plugin.
 
 Java is a registered trademark of Oracle Corporation and/or its affiliates.
+
+

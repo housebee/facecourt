@@ -1,5 +1,7 @@
 package com.facecourt.webapp.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -22,6 +24,9 @@ import com.facecourt.webapp.security.FacebookSignInAdapter;
 @ComponentScan(basePackages = { "com.facecourt.webapp.security" })
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	// logger
+	private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
+
 	@Autowired
 	private UserDetailsService userDetailsService;
 
@@ -41,20 +46,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(final HttpSecurity httpSecurity) throws Exception {
+		logger.info("configure.");
 		// @formatter:off
 		httpSecurity.csrf().disable().authorizeRequests().antMatchers("/login*", "/signin/**", "/signup/**").permitAll()
 				.anyRequest().authenticated().and().formLogin().loginPage("/login").permitAll().and().logout()
 				// TODO: for H2 console. Only authorized user can access
-				// http://localhost:8080/h2-console. Remove for different
-				// database.
+				// http://localhost:8080/h2-console. Remove for different database.
 				 .and().authorizeRequests().antMatchers("/h2-console/**").permitAll();
 				//.and().authorizeRequests().antMatchers("/admin", "/h2_console/**").hasRole("ADMIN").anyRequest();
 		httpSecurity.headers().frameOptions().disable();
+		logger.info("configure done.");
 	} // @formatter:on
 
 	@Bean
 	// @Primary
 	public ProviderSignInController providerSignInController() {
+		logger.info("providerSignInController.");
 		((InMemoryUsersConnectionRepository) usersConnectionRepository).setConnectionSignUp(facebookConnectionSignup);
 		return new ProviderSignInController(connectionFactoryLocator, usersConnectionRepository,
 				new FacebookSignInAdapter());
