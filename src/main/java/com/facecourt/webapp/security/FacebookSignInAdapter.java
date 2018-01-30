@@ -12,19 +12,18 @@ import org.springframework.social.connect.web.SignInAdapter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.NativeWebRequest;
 
-import com.facecourt.webapp.controller.HomeController;
-
 @Service
 public class FacebookSignInAdapter implements SignInAdapter {
 
 	// logger
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	private static final Logger logger = LoggerFactory.getLogger(FacebookSignInAdapter.class);
 
 	@Override
 	public String signIn(String localUserId, Connection<?> connection, NativeWebRequest request) {
-		logger.info(" ====== Sign In adapter, localUserId: " + localUserId);
+		logger.info(" === Sign In adapter, localUserId: " + localUserId);
 		SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
 				connection.getDisplayName(), null, Arrays.asList(new SimpleGrantedAuthority("FACEBOOK_USER"), new SimpleGrantedAuthority("ADMIN"))));
+		logger.info(" === Sign In adapter completed. ");
 		return null;
 	}
 }
