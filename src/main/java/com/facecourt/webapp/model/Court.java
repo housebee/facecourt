@@ -10,8 +10,14 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "court")
 public class Court {
+	/**
+	 * Public court with Id = 1, initialed in data.sql
+	 */
+	public static final Long PUBLIC_COURT_ID = Long.valueOf(1L);
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(nullable = false, unique = true, name="id")
 	private Long id;
 
 	@Column(nullable = false, unique = true)
@@ -73,7 +79,7 @@ public class Court {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("User [id=").append(id).append(", name=").append(name).append(", description=")
+		builder.append("Court [id=").append(id).append(", name=").append(name).append(", description=")
 				.append(description).append("]");
 		return builder.toString();
 	}

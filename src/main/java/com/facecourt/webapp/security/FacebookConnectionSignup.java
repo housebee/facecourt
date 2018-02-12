@@ -1,7 +1,5 @@
 package com.facecourt.webapp.security;
 
-import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,36 +14,49 @@ import org.springframework.web.context.request.RequestContextHolder;
 import com.facecourt.webapp.controller.HomeController;
 import com.facecourt.webapp.model.User;
 import com.facecourt.webapp.model.UserProviderType;
-import com.facecourt.webapp.persist.UserRepository;
+import com.facecourt.webapp.persist.UserDao;
 
+/**
+ * Initial the facebook connection
+ * 
+ * @author suns
+ *
+ */
 @Service
 public class FacebookConnectionSignup implements ConnectionSignUp {
 
 	// logger
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
-	@Autowired
-	private UserRepository userRepository;
+	private static final String CHAR_DOT = ".";
 
+	@Autowired
+	private UserDao userRepository;
+
+	/**
+	 * sign-up user
+	 * 
+	 * Facebook does not provide userId.
+	 * 
+	 */
 	@Override
 	public String execute(Connection<?> connection) {
 		logger.info("signup === ");
 		UserProfile userProfile = connection.fetchUserProfile();
-		String providerId = userProfile.getId();
 		String email = userProfile.getEmail();
 		String firstName = userProfile.getFirstName();
 		String lastName = userProfile.getLastName();
 		// String displayName = connection.getDisplayName();
+		
 		String username = email;
+		// TODO: what if FB user does not have email? username has to be unique, how to handle it???
 		if (StringUtils.isBlank(email)) {
-			username = StringUtils.deleteWhitespace(firstName + "." + lastName);
+			username = StringUtils.deleteWhitespace(firstName + CHAR_DOT + lastName);
 		}
 
-		// find if the user already exists
-		logger.info("Check if user already exists by email =: " + email);
-		User user = userRepository.findByEmail(email);
-		// User user = userRepository.findByProviderId(providerId,
-		// UserProviderType.FACEBOOK);
+		// find if the user already exists with same email address
+		logger.info("Check if user already exists by email =: " + username);
+		User user = userRepository.findByUsername(username);
 		logger.info("Existing user : " + user);
 
 		if (user == null) {
@@ -55,30 +66,25 @@ public class FacebookConnectionSignup implements ConnectionSignUp {
 			user.setPassword("123");
 			user.setFirstName(firstName);
 			user.setLastName(lastName);
-			user.setProviderId(providerId);
+			user.setEmailVerified(Boolean.FALSE);
 			user.setProviderType(UserProviderType.FACEBOOK);
 			userRepository.save(user);
 
-			RequestAttributes request = RequestContextHolder.currentRequestAttributes();
-			Object obj = request.getAttribute("user", RequestAttributes.SCOPE_SESSION);
-			if (obj == null) {
-				logger.info("Add user to seesion." + user);
-				request.setAttribute("user", user, RequestAttributes.SCOPE_SESSION);
-			}
+			// TODO: may not be necessary because spring security already cached
+			// principle in session
+			// RequestAttributes request =
+			// RequestContextHolder.currentRequestAttributes();
+			// Object obj = request.getAttribute("user",
+			// RequestAttributes.SCOPE_SESSION);
+			// if (obj == null) {
+			// logger.info("Add user to seesion." + user);
+			// request.setAttribute("user", user,
+			// RequestAttributes.SCOPE_SESSION);
+			// }
 		} else {
-			// merge local to FB user.
-			if (StringUtils.isBlank(firstName))
-				user.setFirstName(firstName);
-
-			if (StringUtils.isBlank(lastName))
-				user.setLastName(lastName);
-
-			if (StringUtils.isBlank(email))
-				user.setEmail(email);
-
-			// TODO: manage multiple social login sources.
-			user.setProviderId(userProfile.getId());
-			user.setProviderType(UserProviderType.FACEBOOK);
+			// TODO: merge FB user to existing local user ?. Currently use local
+			// user account if same email address is found although user login
+			// with FB
 		}
 
 		logger.info("signup completed." + user);

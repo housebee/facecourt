@@ -3,18 +3,29 @@ package com.facecourt.webapp.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.facecourt.webapp.model.Artifact;
+import com.facecourt.webapp.model.Court;
 import com.facecourt.webapp.model.User;
-import com.facecourt.webapp.persist.ArtifactRepository;
+import com.facecourt.webapp.persist.ArtifactDao;
+import com.facecourt.webapp.persist.CourtDao;
+import com.facecourt.webapp.persist.UserDao;
 
+@Service
 public class ArtifactService {
 
 	// logger
 	private static final Logger logger = LoggerFactory.getLogger(ArtifactService.class);
 
 	@Autowired
-	private ArtifactRepository artifactRepository;
+	private ArtifactDao artifactDao;
+	
+	@Autowired
+	private UserDao userDao;
+
+	@Autowired
+	private CourtDao courtDao;
 
 	public ArtifactService() {
 		super();
@@ -27,13 +38,21 @@ public class ArtifactService {
 	 * @param owner
 	 * @return
 	 */
-	public Artifact createArtifact(Artifact artifact, User owner) {
-		logger.info("create artifact = " + artifact);
-		artifact.setOwner(owner);
+	public Artifact createArtifact(Artifact artifact, String userName) {
+		logger.info("create artifact = " + artifact + " by user = " + userName);
 
-		Artifact result = artifactRepository.save(artifact);
+		User owner = userDao.findByUsername(userName);
+		
+		Court publicCourt = courtDao.findOne(Court.PUBLIC_COURT_ID);
+		logger.info("public court = " + publicCourt);
 
-		logger.info("saved artifact" + artifact);
+//		artifact.setOwner(owner);
+//		artifact.setCourt(publicCourt);
+
+		logger.info("\n\nbefore save artifact = " + artifact);
+		Artifact result = artifactDao.save(artifact);
+		
+		logger.info("saved artifact =  " + result);
 		return result;
 	}
 }

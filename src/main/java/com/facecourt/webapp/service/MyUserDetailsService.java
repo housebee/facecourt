@@ -14,7 +14,7 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
 import com.facecourt.webapp.model.User;
-import com.facecourt.webapp.persist.UserRepository;
+import com.facecourt.webapp.persist.UserDao;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
@@ -23,7 +23,7 @@ public class MyUserDetailsService implements UserDetailsService {
 	private static final Logger logger = LoggerFactory.getLogger(MyUserDetailsService.class);
 
 	@Autowired
-	private UserRepository userRepository;
+	private UserDao userRepository;
 
 	public MyUserDetailsService() {
 		super();

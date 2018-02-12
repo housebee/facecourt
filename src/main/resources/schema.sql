@@ -17,15 +17,15 @@ CREATE TABLE court(
 DROP TABLE IF EXISTS user;
 CREATE TABLE user(
 	id INT auto_increment,
-	username VARCHAR(80), 
-	password VARCHAR(80),
+	username VARCHAR(80) NOT NULL UNIQUE, 
+	password VARCHAR(80) NOT NULL,
 	firstName VARCHAR(80),
 	lastName VARCHAR(80),
 	email VARCHAR(50),
 	providerType INT,
-	providerId VARCHAR(80),
+	emailVerified INT default 0,
 	active INT default 1,
-	PRIMARY KEY (id),
+	PRIMARY KEY (id)
 );
 
 DROP TABLE IF EXISTS courtUser;
@@ -40,7 +40,8 @@ CREATE TABLE courtUser(
 
 DROP TABLE IF EXISTS artifact;
 CREATE TABLE artifact(
-	id INT,
+	id INT auto_increment,
+	title VARCHAR(255),
 	description VARCHAR(255), 
 	courtId INT,
 	ownerId INT,
@@ -61,4 +62,5 @@ CREATE TABLE userArtifact(
     CONSTRAINT FK_UserArtifact_User FOREIGN KEY (userId) REFERENCES user(id),
     CONSTRAINT FK_UserArtifact_Artifact FOREIGN KEY (artifactId) REFERENCES artifact(id)
 );
+
 

@@ -1,5 +1,6 @@
 package com.facecourt.webapp.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -25,18 +26,16 @@ public class User {
 
 	private String lastName;
 
-	private String email;
+	private Boolean emailVerified;
 
 	private UserProviderType providerType;
-
-	private String providerId;
 
 	private Boolean active;
 
 	// private Set<String> roles = new HashSet<>();
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-	Set<UserArtifact> userArtifacts;
+	private Set<UserArtifact> userArtifacts = new HashSet<>();
 
 	public User() {
 		super();
@@ -48,6 +47,14 @@ public class User {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Set<UserArtifact> getUserArtifacts() {
+		return userArtifacts;
+	}
+
+	public void setUserArtifacts(Set<UserArtifact> userArtifacts) {
+		this.userArtifacts = userArtifacts;
 	}
 
 	public String getUsername() {
@@ -66,22 +73,6 @@ public class User {
 		this.password = password;
 	}
 
-	public Set<UserArtifact> getUserArtifacts() {
-		return userArtifacts;
-	}
-
-	public void setUserArtifacts(Set<UserArtifact> userArtifacts) {
-		this.userArtifacts = userArtifacts;
-	}
-
-	public Boolean getActive() {
-		return active;
-	}
-
-	public void setActive(Boolean active) {
-		this.active = active;
-	}
-
 	public String getFirstName() {
 		return firstName;
 	}
@@ -98,12 +89,12 @@ public class User {
 		this.lastName = lastName;
 	}
 
-	public String getEmail() {
-		return email;
+	public Boolean getEmailVerified() {
+		return emailVerified;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setEmailVerified(Boolean emailVerified) {
+		this.emailVerified = emailVerified;
 	}
 
 	public UserProviderType getProviderType() {
@@ -114,12 +105,8 @@ public class User {
 		this.providerType = providerType;
 	}
 
-	public String getProviderId() {
-		return providerId;
-	}
-
-	public void setProviderId(String providerId) {
-		this.providerId = providerId;
+	public Boolean getActive() {
+		return active;
 	}
 
 	@Override

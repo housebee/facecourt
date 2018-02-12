@@ -13,19 +13,16 @@ import javax.persistence.Table;
 @Table(name = "UserArtifact")
 public class UserArtifact implements Serializable {
 
-	/**
-	 * generated
-	 */
 	private static final long serialVersionUID = -1146528530689566499L;
 
 	@Id
 	@ManyToOne
-	@JoinColumn(name = "userId", referencedColumnName = "id")
+	@JoinColumn(name = "userId")
 	private User user;
 
 	@Id
 	@ManyToOne
-	@JoinColumn(name = "artifactId", referencedColumnName = "id")
+	@JoinColumn(name = "artifactId")
 	private Artifact artifact;
 
 	@Column(name = "voteResult", nullable = false)
@@ -33,14 +30,6 @@ public class UserArtifact implements Serializable {
 
 	public UserArtifact() {
 		super();
-	}
-
-	public VoteResultType getVoteResult() {
-		return voteResult;
-	}
-
-	public void setVoteResult(VoteResultType voteResult) {
-		this.voteResult = voteResult;
 	}
 
 	public User getUser() {
@@ -59,12 +48,12 @@ public class UserArtifact implements Serializable {
 		this.artifact = artifact;
 	}
 
-	@Override
-	public String toString() {
-		final StringBuilder builder = new StringBuilder();
-		builder.append("UserArtifact [user=").append(user).append(",artifact=").append(artifact).append(", voteRsult=")
-				.append(voteResult).append("]");
-		return builder.toString();
+	public VoteResultType getVoteResult() {
+		return voteResult;
+	}
+
+	public void setVoteResult(VoteResultType voteResult) {
+		this.voteResult = voteResult;
 	}
 
 }
