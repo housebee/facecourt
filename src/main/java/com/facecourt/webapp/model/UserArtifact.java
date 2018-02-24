@@ -10,22 +10,22 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "UserArtifact")
+@Table(name = "userartifact")
 public class UserArtifact implements Serializable {
 
 	private static final long serialVersionUID = -1146528530689566499L;
 
 	@Id
 	@ManyToOne
-	@JoinColumn(name = "userId")
+	@JoinColumn(name = "userid")
 	private User user;
 
 	@Id
 	@ManyToOne
-	@JoinColumn(name = "artifactId")
+	@JoinColumn(name = "artifactid")
 	private Artifact artifact;
 
-	@Column(name = "voteResult", nullable = false)
+	@Column(name = "voteresult", nullable = false)
 	private VoteResultType voteResult;
 
 	public UserArtifact() {

@@ -20,11 +20,14 @@
 		<form action="#" th:action="@{/newCaseSubmit}" th:object="${caseForm}"
 			method="post">
 			<div class="form-group">
-				<label for="caseTextarea">Case: </label>
+				<label for="caseTitle">Title: </label>
+				<input type="text" class="form-control" id="caseTitle"
+					th:field="*{caseTitle}" rows="5"></input>
+				<label for="caseTextarea">Description: </label>
 				<textarea class="form-control" id="caseTextarea"
 					th:field="*{caseText}" rows="5"></textarea>
 			</div>
-			<button type="submit" class="btn btn-default">Submit</button>
+			<button type="submit" class="btn btn-primary btn-md">Submit</button>
 		</form>
 	</div>
 	

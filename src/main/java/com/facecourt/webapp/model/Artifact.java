@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -21,8 +23,22 @@ public class Artifact {
 	@Column(name = "description")
 	private String desc;
 
+	@Column(name = "totalpos")
+	private String totalPos;
+
+	@Column(name = "totalneg")
+	private String totalNeg;
+
 	@OneToMany(mappedBy = "artifact")
 	private Set<UserArtifact> userArtifacts = new HashSet<>();
+
+	@ManyToOne
+	@JoinColumn(name = "ownerid")
+	private User owner;
+
+	@ManyToOne
+	@JoinColumn(name = "courtid")
+	private Court court;
 
 	public Artifact() {
 		super();
@@ -52,12 +68,44 @@ public class Artifact {
 		this.desc = desc;
 	}
 
+	public User getOwner() {
+		return owner;
+	}
+
+	public void setOwner(User owner) {
+		this.owner = owner;
+	}
+
+	public Court getCourt() {
+		return court;
+	}
+
+	public void setCourt(Court court) {
+		this.court = court;
+	}
+
 	public Set<UserArtifact> getUserArtifacts() {
 		return userArtifacts;
 	}
 
 	public void setUserArtifacts(Set<UserArtifact> userArtifacts) {
 		this.userArtifacts = userArtifacts;
+	}
+
+	public String getTotalPos() {
+		return totalPos;
+	}
+
+	public void setTotalPos(String totalPos) {
+		this.totalPos = totalPos;
+	}
+
+	public String getTotalNeg() {
+		return totalNeg;
+	}
+
+	public void setTotalNeg(String totalNeg) {
+		this.totalNeg = totalNeg;
 	}
 
 	@Override

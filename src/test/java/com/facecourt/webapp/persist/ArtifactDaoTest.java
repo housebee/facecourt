@@ -2,6 +2,7 @@ package com.facecourt.webapp.persist;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.facecourt.webapp.model.Artifact;
+import com.facecourt.webapp.model.Court;
 import com.facecourt.webapp.model.User;
 import com.facecourt.webapp.model.UserArtifact;
 import com.facecourt.webapp.model.VoteResultType;
@@ -22,6 +24,17 @@ public class ArtifactDaoTest {
 
 	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	private CourtDao courtDao;
+	
+	private Court publicCourt;
+
+	@SuppressWarnings("static-access")
+	@Before
+	public void init() {
+		publicCourt = courtDao.findOne(publicCourt.PUBLIC_COURT_ID);
+	}
 
 	@Test
 	public void userArtifactTest() {
@@ -29,6 +42,8 @@ public class ArtifactDaoTest {
 		Artifact artifact = new Artifact();
 		artifact.setTitle("test");
 		artifact.setDesc("description");
+
+		artifactDao.save(artifact);
 
 		User user = new User();
 		user.setEmailVerified(Boolean.FALSE);
@@ -47,9 +62,13 @@ public class ArtifactDaoTest {
 
 		user.getUserArtifacts().add(userArtifact);
 		artifact.getUserArtifacts().add(userArtifact);
+		
+		artifact.setOwner(user);
+		artifact.setCourt(publicCourt);
 
 		// userDao.save(user); // error, cannot understand it !
-		artifactDao.save(artifact);
+		artifactDao.flush();
+		// artifactDao.save(artifact);
 		// userDao.save(user); // this is OK. why both one-to-many, it has
 		// sequence dependency?
 

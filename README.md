@@ -12,6 +12,12 @@
 # Spring Boot has problem with Eclipse, it cannot stop the embedded tomcat server.
 # 
 # Therefore, run the application with DOS command as "mvn spring-boot:run"
+#
+# Note:
+#		JPA is too smart. Java side mapping use all small case, otherwise, JPA create a different column
+#		For example, userName will be mapped to user_name, rather than userName.
+#
+
 
 
 #========================================= deploy app to google cloud ============================================

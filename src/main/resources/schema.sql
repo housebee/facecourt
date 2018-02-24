@@ -45,7 +45,7 @@ CREATE TABLE artifact(
 	description VARCHAR(255), 
 	courtId INT,
 	ownerId INT,
-	status INT,
+	status INT default 0,
 	totalPos INT default 0,
 	totalNeg INT default 0,
 	PRIMARY KEY (id),
@@ -57,7 +57,7 @@ DROP TABLE IF EXISTS userArtifact;
 CREATE TABLE userArtifact(
 	userId INT NOT NULL,
 	artifactId INT NOT NULL,
-	voteStatus INT,
+	voteResult INT,
 	PRIMARY KEY (userid, artifactId),
     CONSTRAINT FK_UserArtifact_User FOREIGN KEY (userId) REFERENCES user(id),
     CONSTRAINT FK_UserArtifact_Artifact FOREIGN KEY (artifactId) REFERENCES artifact(id)

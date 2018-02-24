@@ -10,26 +10,33 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "User")
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(nullable = false, unique = true)
+	@Column(name = "username", nullable = false, unique = true)
 	private String username;
 
 	private String password;
 
+	@Column(name = "firstname")
 	private String firstName;
 
+	@Column(name = "lastname")
 	private String lastName;
 
+	@Column(name = "emailverified")
 	private Boolean emailVerified;
 
+	@Column(name = "providertype")
 	private UserProviderType providerType;
 
+	@Column(name = "active")
 	private Boolean active;
 
 	// private Set<String> roles = new HashSet<>();

@@ -8,8 +8,6 @@ import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionSignUp;
 import org.springframework.social.connect.UserProfile;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
 
 import com.facecourt.webapp.controller.HomeController;
 import com.facecourt.webapp.model.User;
@@ -47,9 +45,10 @@ public class FacebookConnectionSignup implements ConnectionSignUp {
 		String firstName = userProfile.getFirstName();
 		String lastName = userProfile.getLastName();
 		// String displayName = connection.getDisplayName();
-		
+
 		String username = email;
-		// TODO: what if FB user does not have email? username has to be unique, how to handle it???
+		// TODO: what if FB user does not have email? username has to be unique,
+		// how to handle it???
 		if (StringUtils.isBlank(email)) {
 			username = StringUtils.deleteWhitespace(firstName + CHAR_DOT + lastName);
 		}

@@ -10,8 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
 
 import com.facecourt.webapp.model.User;
 import com.facecourt.webapp.persist.UserDao;
@@ -39,15 +37,17 @@ public class MyUserDetailsService implements UserDetailsService {
 			throw new UsernameNotFoundException(username);
 		}
 		logger.info("find user " + user);
-		
+
 		// set user to session
-//        RequestAttributes request = RequestContextHolder.currentRequestAttributes();
-//        Object obj = request.getAttribute("user", RequestAttributes.SCOPE_SESSION);
-//        if (obj == null) {
-//            logger.info("Add user to seesion." + user);
-//            request.setAttribute("user", user, RequestAttributes.SCOPE_SESSION);
-//        }
-        
+		// RequestAttributes request =
+		// RequestContextHolder.currentRequestAttributes();
+		// Object obj = request.getAttribute("user",
+		// RequestAttributes.SCOPE_SESSION);
+		// if (obj == null) {
+		// logger.info("Add user to seesion." + user);
+		// request.setAttribute("user", user, RequestAttributes.SCOPE_SESSION);
+		// }
+
 		return new org.springframework.security.core.userdetails.User(username, user.getPassword(), true, true, true,
 				true, Arrays.asList(new SimpleGrantedAuthority("ROLE_USER")));
 	}
