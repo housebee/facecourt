@@ -12,12 +12,19 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+/**
+ * Model object - Artifact
+ * 
+ * @author suns
+ *
+ */
 @Entity
 public class Artifact {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	@Column(name = "title")
 	private String title;
 
 	@Column(name = "description")
@@ -28,6 +35,9 @@ public class Artifact {
 
 	@Column(name = "totalneg")
 	private String totalNeg;
+
+	@Column(name = "status")
+	private Boolean status;
 
 	@OneToMany(mappedBy = "artifact")
 	private Set<UserArtifact> userArtifacts = new HashSet<>();
@@ -92,6 +102,14 @@ public class Artifact {
 		this.userArtifacts = userArtifacts;
 	}
 
+	public Boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(Boolean status) {
+		this.status = status;
+	}
+
 	public String getTotalPos() {
 		return totalPos;
 	}
@@ -112,7 +130,8 @@ public class Artifact {
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("Artifact [id=").append(id).append(", title=").append(title).append(", desc=").append(desc)
-				.append("]");
+				.append(", status=").append(status).append(", totalPos=").append(totalPos).append(", totalNeg=")
+				.append(totalNeg).append("]");
 		return builder.toString();
 	}
 }

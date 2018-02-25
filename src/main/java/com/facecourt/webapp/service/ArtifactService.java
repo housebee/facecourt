@@ -53,6 +53,9 @@ public class ArtifactService {
 
 		artifact.setOwner(owner);
 		artifact.setCourt(publicCourt);
+		artifact.setStatus(Boolean.TRUE);
+		artifact.setTotalPos(String.valueOf(0));
+		artifact.setTotalNeg(String.valueOf(0));
 
 		UserArtifact userArtifact = new UserArtifact();
 		userArtifact.setArtifact(artifact);
@@ -84,6 +87,10 @@ public class ArtifactService {
 		logger.info("getAllArtifacts.");
 		List<Artifact> result = artifactDao.findAll();
 		logger.info("getAllArtifacts DONE.");
+		
+		for(Artifact art : result) {
+			logger.info("\nResult: " + art);
+		}
 		return result;
 	}
 
