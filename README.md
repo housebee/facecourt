@@ -1,7 +1,9 @@
 # facecourt
 # face court, fun
-
+#
 # prototype with Spring Security, integration with Facebook, embedded H2 database.
+# 
+# Git Reporitory : https://github.com/housebee/facecourt.git
 # 
 # TheamLeaf/UI development
 # Database could be split in the future with tiered architecture.
@@ -16,6 +18,11 @@
 # Note:
 #		JPA is too smart. Java side mapping use all small case, otherwise, JPA create a different column
 #		For example, userName will be mapped to user_name, rather than userName.
+#
+#
+# EGit: 
+#		EGit is the plugin for EClipse IDE
+#		Tutorial is http://www.vogella.com/tutorials/EclipseGit/article.html#how-to-configure-the-usage-of-git-in-eclipse
 #
 
 
