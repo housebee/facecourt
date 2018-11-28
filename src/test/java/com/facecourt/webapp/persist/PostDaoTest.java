@@ -52,7 +52,7 @@ public class PostDaoTest {
 		postDao.save(post);
 		postDao.flush();
 	
-		Post post2 = postDao.findOne(post.getId());
+		Post post2 = postDao.getOne(post.getId());
 		
 		assertThat(post2 != null);
 		assertThat(post2.getComments() != null);

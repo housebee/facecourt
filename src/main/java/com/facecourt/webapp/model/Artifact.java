@@ -1,8 +1,5 @@
 package com.facecourt.webapp.model;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,7 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 
 /**
  * Model object - Artifact
@@ -21,7 +18,8 @@ import javax.persistence.OneToMany;
 @Entity
 public class Artifact {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
+	@SequenceGenerator(name = "user_generator", sequenceName = "SEQUENCE_ARTIFACT", initialValue = 100, allocationSize = 50)
 	private Long id;
 
 	@Column(name = "title")
@@ -39,8 +37,8 @@ public class Artifact {
 	@Column(name = "status")
 	private Boolean status;
 
-	@OneToMany(mappedBy = "artifact")
-	private Set<UserArtifact> userArtifacts = new HashSet<>();
+	// @OneToMany(mappedBy = "artifact")
+	// private Set<UserArtifact> userArtifacts = new HashSet<>();
 
 	@ManyToOne
 	@JoinColumn(name = "ownerid")
@@ -92,14 +90,6 @@ public class Artifact {
 
 	public void setCourt(Court court) {
 		this.court = court;
-	}
-
-	public Set<UserArtifact> getUserArtifacts() {
-		return userArtifacts;
-	}
-
-	public void setUserArtifacts(Set<UserArtifact> userArtifacts) {
-		this.userArtifacts = userArtifacts;
 	}
 
 	public Boolean getStatus() {

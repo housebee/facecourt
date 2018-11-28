@@ -1,12 +1,22 @@
 /** 
  * This is default SQL file for spring-boot to load at the beginning of application.
  * 
- * Current database uses H2 in memory. 
+ * Current database uses H2 in memory.
+ *  
+ * Sequence is created for each entity. TABLE auto Id generation should not be used. 
+ * The initial value of 100 and increment of 50 matches the JPA 'initialValue = 100 allocationSize=50' in the java data model.
+ * 
  */
 
+--- SEQUENCE ---
+CREATE SEQUENCE SEQUENCE_USER START WITH 100 INCREMENT BY 50;
+CREATE SEQUENCE SEQUENCE_ARTIFACT START WITH 100 INCREMENT BY 50;
+CREATE SEQUENCE SEQUENCE_COURT START WITH 100 INCREMENT BY 50;
+
+--- TABLE ---
 DROP TABLE IF EXISTS court;
 CREATE TABLE court(
-	id INT,
+	id INT NOT NULL,
 	name VARCHAR(100) NOT NULL, 
 	description VARCHAR(255) NOT NULL,
 	category INT NOT NULL,
@@ -16,7 +26,7 @@ CREATE TABLE court(
 
 DROP TABLE IF EXISTS user;
 CREATE TABLE user(
-	id INT auto_increment,
+	id INT NOT NULL,
 	username VARCHAR(80) NOT NULL UNIQUE, 
 	password VARCHAR(80) NOT NULL,
 	firstName VARCHAR(80),
@@ -40,7 +50,7 @@ CREATE TABLE courtUser(
 
 DROP TABLE IF EXISTS artifact;
 CREATE TABLE artifact(
-	id INT auto_increment,
+	id INT NOT NULL,
 	title VARCHAR(255),
 	description VARCHAR(255), 
 	courtId INT,
@@ -62,5 +72,4 @@ CREATE TABLE userArtifact(
     CONSTRAINT FK_UserArtifact_User FOREIGN KEY (userId) REFERENCES user(id),
     CONSTRAINT FK_UserArtifact_Artifact FOREIGN KEY (artifactId) REFERENCES artifact(id)
 );
-
 

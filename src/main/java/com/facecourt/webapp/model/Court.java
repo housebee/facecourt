@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -16,8 +17,10 @@ public class Court {
 	public static final Long PUBLIC_COURT_ID = Long.valueOf(1L);
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(nullable = false, unique = true, name="id")
+//	@GeneratedValue(strategy = GenerationType.AUTO)
+//	@Column(nullable = false, unique = true, name="id")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "court_generator")
+	@SequenceGenerator(name="court_generator", sequenceName = "SEQUENCE_COURT", initialValue=100, allocationSize=50)
 	private Long id;
 
 	@Column(nullable = false, unique = true)

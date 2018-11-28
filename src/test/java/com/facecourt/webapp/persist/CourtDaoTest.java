@@ -9,6 +9,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.facecourt.webapp.model.Court;
+import com.facecourt.webapp.model.CourtCatagory;
+import com.facecourt.webapp.model.CourtType;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -20,10 +22,20 @@ public class CourtDaoTest {
 	@Test
 	public void test() {
 
-		Court publicCourt = courtDao.findOne(Court.PUBLIC_COURT_ID);
+		Court publicCourt = courtDao.getOne(Court.PUBLIC_COURT_ID);
 
 		assertTrue("public court id match. ", publicCourt.getId() == Court.PUBLIC_COURT_ID);
 
+		
+		Court court = new Court();
+		court.setName("TestCourt");
+		court.setType(CourtType.FAMILY);
+		court.setDescription("Test Court");
+		court.setCategory(CourtCatagory.PRIVATE);
+		
+		courtDao.saveAndFlush(court);
+		
+		assertTrue(court.getId() != null);
 	}
 
 }

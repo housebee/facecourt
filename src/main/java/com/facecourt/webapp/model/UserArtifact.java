@@ -3,10 +3,8 @@ package com.facecourt.webapp.model;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -15,15 +13,8 @@ public class UserArtifact implements Serializable {
 
 	private static final long serialVersionUID = -1146528530689566499L;
 
-	@Id
-	@ManyToOne
-	@JoinColumn(name = "userid")
-	private User user;
-
-	@Id
-	@ManyToOne
-	@JoinColumn(name = "artifactid")
-	private Artifact artifact;
+	@EmbeddedId
+	private UserArtifactKey userArtifactKey;
 
 	@Column(name = "voteresult", nullable = false)
 	private VoteResultType voteResult;
@@ -32,20 +23,12 @@ public class UserArtifact implements Serializable {
 		super();
 	}
 
-	public User getUser() {
-		return user;
+	public UserArtifactKey getUserArtifactKey() {
+		return userArtifactKey;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public Artifact getArtifact() {
-		return artifact;
-	}
-
-	public void setArtifact(Artifact artifact) {
-		this.artifact = artifact;
+	public void setUserArtifactKey(UserArtifactKey userArtifactKey) {
+		this.userArtifactKey = userArtifactKey;
 	}
 
 	public VoteResultType getVoteResult() {
@@ -54,6 +37,14 @@ public class UserArtifact implements Serializable {
 
 	public void setVoteResult(VoteResultType voteResult) {
 		this.voteResult = voteResult;
+	}
+
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("[UserId=").append(userArtifactKey.getUserId()).append(", artifactId=")
+				.append(userArtifactKey.getArtifactId()).append(", Vote=").append(voteResult).append("]");
+		return builder.toString();
 	}
 
 }

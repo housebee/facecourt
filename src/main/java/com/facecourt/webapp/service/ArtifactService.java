@@ -48,7 +48,8 @@ public class ArtifactService {
 		User owner = userDao.findByUsername(userName);
 		logger.info("find owner = " + owner);
 
-		Court publicCourt = courtDao.findOne(Court.PUBLIC_COURT_ID);
+//		Court publicCourt = courtDao.findOne(Court.PUBLIC_COURT_ID); // problem with spring-boot 2
+		Court publicCourt = courtDao.getOne(Court.PUBLIC_COURT_ID);
 		logger.info("public court = " + publicCourt);
 
 		artifact.setOwner(owner);
@@ -58,14 +59,14 @@ public class ArtifactService {
 		artifact.setTotalNeg(String.valueOf(0));
 
 		UserArtifact userArtifact = new UserArtifact();
-		userArtifact.setArtifact(artifact);
-		userArtifact.setUser(owner);
+//		userArtifact.setArtifact(artifact);
+//		userArtifact.setUser(owner);
 		userArtifact.setVoteResult(VoteResultType.UNKNOWN);
 
 		// Artifact result = artifactDao.save(artifact);
 
-		owner.getUserArtifacts().add(userArtifact);
-		artifact.getUserArtifacts().add(userArtifact);
+//		owner.getUserArtifacts().add(userArtifact);
+//		artifact.getUserArtifacts().add(userArtifact);
 
 		// userDao.save(owner);
 
