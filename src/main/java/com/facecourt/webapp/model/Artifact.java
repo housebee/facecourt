@@ -18,8 +18,8 @@ import javax.persistence.SequenceGenerator;
 @Entity
 public class Artifact {
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
-	@SequenceGenerator(name = "user_generator", sequenceName = "SEQUENCE_ARTIFACT", initialValue = 100, allocationSize = 50)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "artifact_generator")
+	@SequenceGenerator(name = "artifact_generator", sequenceName = "SEQUENCE_ARTIFACT", initialValue = 100, allocationSize = 50)
 	private Long id;
 
 	@Column(name = "title")
@@ -29,10 +29,10 @@ public class Artifact {
 	private String desc;
 
 	@Column(name = "totalpos")
-	private String totalPos;
+	private Long totalPos;
 
 	@Column(name = "totalneg")
-	private String totalNeg;
+	private Long totalNeg;
 
 	@Column(name = "status")
 	private Boolean status;
@@ -100,19 +100,19 @@ public class Artifact {
 		this.status = status;
 	}
 
-	public String getTotalPos() {
+	public Long getTotalPos() {
 		return totalPos;
 	}
 
-	public void setTotalPos(String totalPos) {
+	public void setTotalPos(Long totalPos) {
 		this.totalPos = totalPos;
 	}
 
-	public String getTotalNeg() {
+	public Long getTotalNeg() {
 		return totalNeg;
 	}
 
-	public void setTotalNeg(String totalNeg) {
+	public void setTotalNeg(Long totalNeg) {
 		this.totalNeg = totalNeg;
 	}
 

@@ -7,6 +7,8 @@
 <title>Face Court</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<link href="../static/css/app.css" th:href="@{/css/app.css}"
+	rel="stylesheet" />
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script
@@ -20,18 +22,17 @@
 		<form action="#" th:action="@{/newCaseSubmit}" th:object="${caseForm}"
 			method="post">
 			<div class="form-group">
-				<label for="caseTitle">Title: </label>
-				<input type="text" class="form-control" id="caseTitle"
-					th:field="*{caseTitle}" rows="5"></input>
-				<label for="caseTextarea">Description: </label>
+				<label for="caseTitle">Title: </label> <input type="text"
+					class="form-control" id="caseTitle" th:field="*{caseTitle}"
+					rows="5"></input> <label for="caseTextarea">Description: </label>
 				<textarea class="form-control" id="caseTextarea"
 					th:field="*{caseText}" rows="5"></textarea>
 			</div>
 			<button type="submit" class="btn btn-primary btn-md">Submit</button>
 		</form>
 	</div>
-	
+
 	<div th:replace="fragments/footer :: footer" />
-	
+
 </body>
 </html>

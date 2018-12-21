@@ -55,8 +55,8 @@ public class ArtifactService {
 		artifact.setOwner(owner);
 		artifact.setCourt(publicCourt);
 		artifact.setStatus(Boolean.TRUE);
-		artifact.setTotalPos(String.valueOf(0));
-		artifact.setTotalNeg(String.valueOf(0));
+		artifact.setTotalPos(Long.valueOf(123));
+		artifact.setTotalNeg(Long.valueOf(456));
 
 		UserArtifact userArtifact = new UserArtifact();
 //		userArtifact.setArtifact(artifact);

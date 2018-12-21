@@ -1,0 +1,14 @@
+
+
+input#image-like-button{
+    background: #ccc url('/images/32px-Facebook_like_thumb.png') no-repeat top left;
+    padding-left: 16px;
+    height: 32px;
+}
+
+input#image-dislike-button{
+    background: #ccc url('/images/32px-Facebook_dislike_thumb.png') no-repeat top left;
+    padding-left: 16px;
+    height: 16px;
+}
+

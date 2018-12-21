@@ -4,12 +4,53 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Face Court</title>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/css/bootstrap/3.3.7/bootstrap.min.css" />
+<link href="/css/app.css" th:href="@{/css/app.css}" rel="stylesheet" />
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="/js/bootstrap/3.3.7/bootstrap.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".likethumbImg").click(function(event) {
+			var artifactId = $(this).attr('artfactId');
+			var url = "/votePos/" + artifactId;
+
+			$.ajax({
+				type : "GET",
+				url : url,
+				success : function(data) {
+					console.log("SUCCESS likethumbImg click : ", data);
+					var artId = data.id;
+					var totalPosNum = data.totalPos;
+					var totalNegNum = data.totalNeg;
+
+					$("#PosNumLbl" + artId).text(totalPosNum);
+					$("#NegNumLbl" + artId).text(totalNegNum);
+				}
+			});
+		});
+
+		$(".dislikethumbImg").click(function(event) {
+			var artifactId = $(this).attr('artfactId');
+			var url = "/voteNeg/" + artifactId;
+
+			$.ajax({
+				type : "GET",
+				url : url,
+				success : function(data) {
+					console.log("SUCCESS dislikethumbImg click : ", data);
+					var artId = data.id;
+					var totalPosNum = data.totalPos;
+					var totalNegNum = data.totalNeg;
+
+					$("#PosNumLbl" + artId).text(totalPosNum);
+					$("#NegNumLbl" + artId).text(totalNegNum);
+				}
+			});
+		});
+
+	});
+</script>
 </head>
 <body>
 
@@ -31,13 +72,17 @@
 				<span th:text="${artifact.desc}">This is the case one.</span>
 			</div>
 			<div class="panel-footer text-center">
-				<span class=""><span class="glyphicon glyphicon-thumbs-up"
-					th:text="${artifact.totalPos}"></span> &nbsp;&nbsp; <span
-					class="glyphicon glyphicon-thumbs-down"
-					th:text="${artifact.totalNeg}"></span></span>
+				<span><img class="likethumbImg" alt="likethumb"
+					data-th-attr="artfactId=${artifact.id}"
+					src="/images/32px-Facebook_like_thumb.png" />&nbsp;<label
+					th:id="PosNumLbl + ${artifact.id}" th:text="${artifact.totalPos}" />
+					&nbsp;&nbsp;</span> <span><img class="dislikethumbImg"
+					data-th-attr="artfactId=${artifact.id}" alt="dislikethumb"
+					src="/images/32px-Facebook_dislike_thumb.png" />&nbsp;<span><label
+						th:id="NegNumLbl + ${artifact.id}" th:text="${artifact.totalNeg}" /></span></span>
 			</div>
 		</div>
-		
+
 	</div>
 
 	<div th:replace="fragments/footer :: footer" />

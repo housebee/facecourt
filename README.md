@@ -15,6 +15,10 @@
 # 
 # Therefore, run the application with DOS command as "mvn spring-boot:run"
 #
+# Debug:
+#   1. mvn spring-boot:run -Drun.jvmArguments="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
+#   2. Remote debug from eclipse with port above - 5005
+#
 # Note:
 #		JPA is too smart. Java side mapping use all small case, otherwise, JPA create a different column
 #		For example, userName will be mapped to user_name, rather than userName.
