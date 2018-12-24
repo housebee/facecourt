@@ -15,15 +15,15 @@ import com.facecourt.webapp.model.User;
 import com.facecourt.webapp.persist.UserDao;
 
 @Service
-public class MyUserDetailsService implements UserDetailsService {
+public class AppUserDetailsService implements UserDetailsService {
 
 	// logger
-	private static final Logger logger = LoggerFactory.getLogger(MyUserDetailsService.class);
+	private static final Logger logger = LoggerFactory.getLogger(AppUserDetailsService.class);
 
 	@Autowired
 	private UserDao userRepository;
 
-	public MyUserDetailsService() {
+	public AppUserDetailsService() {
 		super();
 	}
 
@@ -37,16 +37,6 @@ public class MyUserDetailsService implements UserDetailsService {
 			throw new UsernameNotFoundException(username);
 		}
 		logger.info("find user " + user);
-
-		// set user to session
-		// RequestAttributes request =
-		// RequestContextHolder.currentRequestAttributes();
-		// Object obj = request.getAttribute("user",
-		// RequestAttributes.SCOPE_SESSION);
-		// if (obj == null) {
-		// logger.info("Add user to seesion." + user);
-		// request.setAttribute("user", user, RequestAttributes.SCOPE_SESSION);
-		// }
 
 		return new org.springframework.security.core.userdetails.User(username, user.getPassword(), true, true, true,
 				true, Arrays.asList(new SimpleGrantedAuthority("ROLE_USER")));

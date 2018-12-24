@@ -12,7 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -42,7 +41,7 @@ public class HomeController {
 		String principalName = getUser();
 		logger.info("FB authenticated user = " + principalName);
 
-		List<Artifact> artifacts = artifactService.getAllArtifacts();
+		List<Artifact> artifacts = artifactService.getAllArtifactsAndVotes();
 
 		model.addAttribute("artifacts", artifacts);
 		return "/index";
@@ -96,7 +95,7 @@ public class HomeController {
 		artifact = artifactService.createArtifact(artifact, userName);
 
 		logger.info("submit new case end. artifact = " + artifact);
-		return "/myCase";
+		return "redirect:/myCase";
 	}
 
 	/**
@@ -107,6 +106,7 @@ public class HomeController {
 	private String getUser() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String currentPrincipalName = authentication.getName();
+		logger.debug("current user : " + currentPrincipalName);
 		return currentPrincipalName;
 	}
 

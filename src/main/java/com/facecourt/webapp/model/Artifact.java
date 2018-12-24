@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 /**
  * Model object - Artifact
@@ -31,10 +32,12 @@ public class Artifact {
 	@Column(name = "totalpos")
 	private Long totalPos;
 
-	@Column(name = "totalneg")
+	@Transient
+//	@Column(name = "totalneg")
 	private Long totalNeg;
 
-	@Column(name = "status")
+	@Transient
+//	@Column(name = "status")
 	private Boolean status;
 
 	// @OneToMany(mappedBy = "artifact")
