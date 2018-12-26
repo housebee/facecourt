@@ -4,9 +4,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionSignUp;
-import org.springframework.social.connect.UserProfile;
+import org.springframework.social.facebook.api.Facebook;
 import org.springframework.stereotype.Service;
 
 import com.facecourt.webapp.controller.HomeController;
@@ -26,8 +27,6 @@ public class FacebookConnectionSignup implements ConnectionSignUp {
 	// logger
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
-	private static final String CHAR_DOT = ".";
-
 	@Autowired
 	private UserDao userRepository;
 
@@ -39,18 +38,29 @@ public class FacebookConnectionSignup implements ConnectionSignUp {
 	 */
 	@Override
 	public String execute(Connection<?> connection) {
-		logger.info("signup === ");
-		UserProfile userProfile = connection.fetchUserProfile();
+		logger.info("=== facebook signup === ");
+
+		Facebook facebook = (Facebook) connection.getApi();
+
+		String[] fields = { "id", "about", "age_range", "birthday", "context", "cover", "currency", "devices",
+				"education", "email", "favorite_athletes", "favorite_teams", "first_name", "gender", "hometown",
+				"inspirational_people", "installed", "install_type", "is_verified", "languages", "last_name", "link",
+				"locale", "location", "meeting_for", "middle_name", "name", "name_format", "political", "quotes",
+				"payment_pricepoints", "relationship_status", "religion", "security_settings", "significant_other",
+				"sports", "test_group", "timezone", "third_party_id", "updated_time", "verified", "video_upload_limits",
+				"viewer_can_send_gift", "website", "work" };
+		org.springframework.social.facebook.api.User userProfile = facebook.fetchObject("me",
+				org.springframework.social.facebook.api.User.class, fields);
+
 		String email = userProfile.getEmail();
 		String firstName = userProfile.getFirstName();
 		String lastName = userProfile.getLastName();
-		// String displayName = connection.getDisplayName();
+		Boolean isVerified = userProfile.isVerified();
 
 		String username = email;
-		// TODO: what if FB user does not have email? username has to be unique,
-		// how to handle it???
-		if (StringUtils.isBlank(email)) {
-			username = StringUtils.deleteWhitespace(firstName + CHAR_DOT + lastName);
+		if (StringUtils.isBlank(username)) {
+			// facebook email is required because it is used as username for login.
+			throw new UsernameNotFoundException("cannot create account because facebook email address is empty.");
 		}
 
 		// find if the user already exists with same email address
@@ -65,29 +75,18 @@ public class FacebookConnectionSignup implements ConnectionSignUp {
 			user.setPassword("123");
 			user.setFirstName(firstName);
 			user.setLastName(lastName);
-			user.setEmailVerified(Boolean.FALSE);
+			user.setEmailVerified(isVerified);
 			user.setProviderType(UserProviderType.FACEBOOK);
 			userRepository.save(user);
-
-			// TODO: may not be necessary because spring security already cached
-			// principle in session
-			// RequestAttributes request =
-			// RequestContextHolder.currentRequestAttributes();
-			// Object obj = request.getAttribute("user",
-			// RequestAttributes.SCOPE_SESSION);
-			// if (obj == null) {
-			// logger.info("Add user to seesion." + user);
-			// request.setAttribute("user", user,
-			// RequestAttributes.SCOPE_SESSION);
-			// }
 		} else {
+			logger.info("facebook user come back. " + username);
 			// TODO: merge FB user to existing local user ?. Currently use local
 			// user account if same email address is found although user login
 			// with FB
 		}
 
 		logger.info("signup completed." + user);
-		return user.getUsername();
+		return username;
 	}
 
 }
