@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Face Court</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Face Court</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<link href="../static/css/app.css" th:href="@{/css/app.css}"
+	rel="stylesheet" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+	<div th:replace="fragments/header :: header" />
+<h1>EDIT CASE</h1>
+
+	<div class="container">
+		<form action="#" th:action="@{/update}" th:object="${artifact}"
+			method="post">
+			<input type="hidden" id="id" th:field="*{id}" />
+			<div class="form-group">
+				<label for="caseTitle">Title: </label> <input type="text"
+					class="form-control" id="caseTitle" th:field="*{title}"
+					rows="5"></input> <label for="caseTextarea">Description: </label>
+				<textarea class="form-control" id="caseTextarea"
+					th:field="*{desc}" rows="5"></textarea>
+			</div>
+			<button type="submit" class="btn btn-primary btn-md">Submit</button>
+		</form>
+	</div>
+
+	<div th:replace="fragments/footer :: footer" />
+
+</body>
+</html>

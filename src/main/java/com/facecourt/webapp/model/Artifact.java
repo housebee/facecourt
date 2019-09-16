@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Model object - Artifact
  * 
@@ -29,7 +31,8 @@ public class Artifact {
 	@Column(name = "description")
 	private String desc;
 
-	@Column(name = "totalpos")
+	@Transient
+//	@Column(name = "totalpos")
 	private Long totalPos;
 
 	@Transient
@@ -47,6 +50,7 @@ public class Artifact {
 	@JoinColumn(name = "ownerid")
 	private User owner;
 
+	@JsonIgnoreProperties({"hibernateLazyInitializer","handler"}) // The problem is that entities are loaded lazily and serialization happens before they get loaded fully
 	@ManyToOne
 	@JoinColumn(name = "courtid")
 	private Court court;
@@ -124,7 +128,7 @@ public class Artifact {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("Artifact [id=").append(id).append(", title=").append(title).append(", desc=").append(desc)
 				.append(", status=").append(status).append(", totalPos=").append(totalPos).append(", totalNeg=")
-				.append(totalNeg).append("]");
+				.append(totalNeg).append(",user=").append(this.owner).append(",court=").append(this.court).append("]");
 		return builder.toString();
 	}
 }

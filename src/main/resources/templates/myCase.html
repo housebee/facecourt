@@ -10,6 +10,49 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".likethumbImg").click(function(event) {
+			var artifactId = $(this).attr('artfactId');
+			var url = "/api/v1/votePos/" + artifactId;
+
+			$.ajax({
+				type : "GET",
+				url : url,
+				success : function(data) {
+					console.log("SUCCESS likethumbImg click : ", data);
+					var artId = data.id;
+					var totalPosNum = data.totalPos;
+					var totalNegNum = data.totalNeg;
+
+					$("#PosNumLbl" + artId).text(totalPosNum);
+					$("#NegNumLbl" + artId).text(totalNegNum);
+				}
+			});
+		});
+
+		$(".dislikethumbImg").click(function(event) {
+			var artifactId = $(this).attr('artfactId');
+			var url = "/api/v1/voteNeg/" + artifactId;
+
+			$.ajax({
+				type : "GET",
+				url : url,
+				success : function(data) {
+					console.log("SUCCESS dislikethumbImg click : ", data);
+					var artId = data.id;
+					var totalPosNum = data.totalPos;
+					var totalNegNum = data.totalNeg;
+
+					$("#PosNumLbl" + artId).text(totalPosNum);
+					$("#NegNumLbl" + artId).text(totalNegNum);
+				}
+			});
+		});
+
+	});
+</script>
+
 </head>
 <body>
 
@@ -17,24 +60,29 @@
 
 	<div class="container">
 
-		<div class="well">
-			<h1>
-				Welcome, <span sec:authentication="name">Username</span>
-			</h1>
-			<p sec:authentication="authorities">User authorities</p>
-			<a class="btn btn-primary btn-lg" href="/newCase">Create New Case</a>
-		</div>
-
 		<div class="panel panel-info" th:each="artifact : ${artifacts}">
-			<div class="panel-heading" th:text="${artifact.title}">Case ONE</div>
+			<!-- div class="panel-heading" th:text="${artifact.title}">Case ONE</div -->
+			<div class="panel-heading clearfix">
+				<h4 class="panel-title pull-left" style="padding-top: 7.5px;"
+					th:text="${artifact.title}">Panel header</h4>
+				<div class="btn-group pull-right">
+					<a th:href="@{/edit/{id}(id=${artifact.id})}"
+						class="btn btn-default btn-sm">Edit</a> <a th:href="@{/delete/{id}(id=${artifact.id})}"
+						class="btn btn-default btn-sm" onclick="return confirm(' you want to delete?');">Delete</a>
+				</div>
+			</div>
 			<div class="panel-body">
 				<span th:text="${artifact.desc}">This is the case one.</span>
 			</div>
 			<div class="panel-footer text-center">
-				<span class=""><span class="glyphicon glyphicon-thumbs-up"
-					th:text="${artifact.totalPos}">&nbsp;&nbsp;</span><span
-					class="glyphicon glyphicon-thumbs-down"
-					th:text="${artifact.totalNeg}"></span></span>
+				<span><img class="likethumbImg" alt="likethumb"
+					data-th-attr="artfactId=${artifact.id}"
+					src="/images/32px-Facebook_like_thumb.png" />&nbsp;<label
+					th:id="PosNumLbl + ${artifact.id}" th:text="${artifact.totalPos}" />
+					&nbsp;&nbsp;</span> <span><img class="dislikethumbImg"
+					data-th-attr="artfactId=${artifact.id}" alt="dislikethumb"
+					src="/images/32px-Facebook_dislike_thumb.png" />&nbsp;<span><label
+						th:id="NegNumLbl + ${artifact.id}" th:text="${artifact.totalNeg}" /></span></span>
 			</div>
 		</div>
 

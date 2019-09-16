@@ -64,8 +64,12 @@ Set the correct Cloud SDK project via "gcloud config set project open-court" to 
 Run mvn spring-boot:run
 Visit http://localhost:8080
 
-Deploy to App Engine flexible environment
-mvn appengine:deploy
+Deploy to App Engine flexible environment. The version number for appengine plugin cannot be 1.0.0, it has to be only numbers/chars, such as "1" or "dev".
+without step #1, it usually has timeout error.
+
+0. gcloud app versions stop 1
+1. gcloud beta app update --split-health-checks --project
+2. mvn appengine:deploy
 
 Monitor the app server log
 gcloud app logs tail

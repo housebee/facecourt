@@ -48,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(final HttpSecurity httpSecurity) throws Exception {
 		logger.info("configure.");
 		// @formatter:off
-		httpSecurity.csrf().disable().authorizeRequests().antMatchers("/login*", "/signin/**", "/signup/**").permitAll()
+		httpSecurity.csrf().disable().authorizeRequests().antMatchers("/login*", "/signin/**", "/signup/**", "/api/**").permitAll()
 				.anyRequest().authenticated().and().formLogin().loginPage("/login").permitAll().and().logout()
 				// TODO: for H2 console. Only authorized user can access
 				// http://localhost:8080/h2-console. Remove for different database.

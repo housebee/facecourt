@@ -2,6 +2,7 @@ package com.facecourt.webapp.service;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -76,36 +77,52 @@ public class ArtifactServiceTest {
 
 	@Test
 	public void testUesrArtifact() throws Exception {
-		artifactService.voteArtifact("admin", artifact.getId(), VoteResultType.POSITIVE);
+//		artifactService.voteArtifact("admin", artifact.getId(), VoteResultType.POSITIVE);
+//
+//		Map<Long, Long> result = artifactService.getArtifactVoteNum(artifact);
+//		assertTrue(result.size() == 1);
+//		assertTrue(result.get(Long.valueOf(VoteResultType.POSITIVE.getCode())) == 1);
+//
+//		String content = result.entrySet().stream().map(e -> e.getKey() + "=\"" + e.getValue() + "\"")
+//				.collect(Collectors.joining(", "));
+//		System.out.println(content);
+//
+//		artifactService.voteArtifact("test", artifact.getId(), VoteResultType.POSITIVE);
+//
+//		result = artifactService.getArtifactVoteNum(artifact);
+//
+//		content = result.entrySet().stream().map(e -> e.getKey() + "=\"" + e.getValue() + "\"")
+//				.collect(Collectors.joining(", "));
+//		System.out.println(content);
+//
+//		artifactService.voteArtifact("test", artifact.getId(), VoteResultType.NEGATIVE);
+//		assertTrue(result.size() == 1);
+//		assertTrue(result.get(Long.valueOf(VoteResultType.POSITIVE.getCode())) == 2);
+//
+//		result = artifactService.getArtifactVoteNum(artifact);
+//		assertTrue(result.size() == 2);
+//		assertTrue(result.get(Long.valueOf(VoteResultType.POSITIVE.getCode())) == 1);
+//		assertTrue(result.get(Long.valueOf(VoteResultType.NEGATIVE.getCode())) == 1);
+//
+//		content = result.entrySet().stream().map(e -> e.getKey() + "=\"" + e.getValue() + "\"")
+//				.collect(Collectors.joining(", "));
+//		System.out.println(content);
+		List<Artifact> artifactList = this.artifactService.getAllArtifactsAndVotes();
+		
+		assertTrue(artifactList.size() == 2);
+		
+		System.out.println("S.SUN::Get all artifacts......");
+		
+		for (Artifact artifact : artifactList) {
+			System.out.println(artifact);
+		}
+		
+		artifactService.voteArtifact("test", 1L, VoteResultType.POSITIVE);
+		
+		Artifact artfactWithUpdatedVote = artifactService.findArtifactWithVotes(1L);
 
-		Map<Long, Long> result = artifactService.getArtifactVoteNum(artifact);
-		assertTrue(result.size() == 1);
-		assertTrue(result.get(Long.valueOf(VoteResultType.POSITIVE.getCode())) == 1);
-
-		String content = result.entrySet().stream().map(e -> e.getKey() + "=\"" + e.getValue() + "\"")
-				.collect(Collectors.joining(", "));
-		System.out.println(content);
-
-		artifactService.voteArtifact("test", artifact.getId(), VoteResultType.POSITIVE);
-
-		result = artifactService.getArtifactVoteNum(artifact);
-
-		content = result.entrySet().stream().map(e -> e.getKey() + "=\"" + e.getValue() + "\"")
-				.collect(Collectors.joining(", "));
-		System.out.println(content);
-
-		artifactService.voteArtifact("test", artifact.getId(), VoteResultType.NEGATIVE);
-		assertTrue(result.size() == 1);
-		assertTrue(result.get(Long.valueOf(VoteResultType.POSITIVE.getCode())) == 2);
-
-		result = artifactService.getArtifactVoteNum(artifact);
-		assertTrue(result.size() == 2);
-		assertTrue(result.get(Long.valueOf(VoteResultType.POSITIVE.getCode())) == 1);
-		assertTrue(result.get(Long.valueOf(VoteResultType.NEGATIVE.getCode())) == 1);
-
-		content = result.entrySet().stream().map(e -> e.getKey() + "=\"" + e.getValue() + "\"")
-				.collect(Collectors.joining(", "));
-		System.out.println(content);
+		System.out.println("S.SUN::Add one positive vote ......");
+		System.out.println(artfactWithUpdatedVote);
 	}
 
 }

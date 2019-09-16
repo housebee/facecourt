@@ -1,8 +1,10 @@
 package com.facecourt.webapp.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -68,7 +71,15 @@ public class HomeController {
 
 		List<Artifact> artifacts = artifactService.getArtifactsByOwner(principalName);
 
-		model.addAttribute("artifacts", artifacts);
+		List<Artifact> result = new ArrayList<Artifact>();
+
+		for (Artifact artifact : artifacts) {
+			Long artifactId = artifact.getId();
+			Artifact artifactWithCount = artifactService.findArtifactWithVotes(artifactId);
+			result.add(artifactWithCount);
+		}
+
+		model.addAttribute("artifacts", result);
 
 		logger.info("get my artifacts.");
 		return "/myCase";
@@ -95,6 +106,47 @@ public class HomeController {
 		artifact = artifactService.createArtifact(artifact, userName);
 
 		logger.info("submit new case end. artifact = " + artifact);
+		return "redirect:/myCase";
+	}
+
+	@RequestMapping(value = "edit/{artifactId}", method = RequestMethod.GET)
+	public String editCase(Model model, @PathVariable("artifactId") String artifactId) {
+		logger.info("edit my case. artifactId = " + artifactId);
+
+		Long artifactIdLong = Long.valueOf(artifactId);
+
+		Artifact artifact = artifactService.getArtifactById(artifactIdLong);
+
+		model.addAttribute("artifact", artifact);
+
+		logger.info("edit my artifact.");
+		return "/editCase";
+	}
+
+	@RequestMapping(value = "update", method = RequestMethod.POST)
+	public String updateCase(Model model, @Valid Artifact artifact) {
+		logger.info("update my case. artifact = " + artifact);
+
+		Artifact existingArtifact = artifactService.getArtifactById(artifact.getId());
+
+		existingArtifact.setTitle(artifact.getTitle());
+		existingArtifact.setDesc(artifact.getDesc());
+
+		Artifact savedArtifact = artifactService.updateArtifact(existingArtifact);
+
+		logger.info("updated my artifact. " + savedArtifact);
+		return "redirect:/myCase";
+	}
+
+	@RequestMapping(value = "delete/{artifactId}", method = RequestMethod.GET)
+	public String deleteCase(Model model, @PathVariable("artifactId") String artifactId) {
+		logger.info("delete my case. artifactId = " + artifactId);
+
+		Long artifactIdLong = Long.valueOf(artifactId);
+
+		artifactService.deleteArtifactById(artifactIdLong);
+
+		logger.info("delete my artifact.");
 		return "redirect:/myCase";
 	}
 

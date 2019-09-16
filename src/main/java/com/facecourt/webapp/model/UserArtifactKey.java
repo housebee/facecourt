@@ -56,4 +56,10 @@ public class UserArtifactKey implements Serializable {
 	public int hashCode() {
 		return Objects.hash(userId, artifactId);
 	}
+
+	@Override
+	public String toString() {
+		return "UserArtifactKey [userId=" + userId + ", artifactId=" + artifactId + "]";
+	}
+	
 };

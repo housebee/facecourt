@@ -120,6 +120,10 @@
 			<plugin>
 				<groupId>com.google.cloud.tools</groupId>
 				<artifactId>appengine-maven-plugin</artifactId>
+				<configuration>
+					<deploy.projectId>open-court</deploy.projectId>
+					<version>1</version>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

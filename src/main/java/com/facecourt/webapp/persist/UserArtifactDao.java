@@ -19,7 +19,7 @@ public interface UserArtifactDao extends JpaRepository<UserArtifact, UserArtifac
 	UserArtifact findByUserArtifactKey(UserArtifactKey userArtifactKey);
 
 	@Query(value = "SELECT " 
-			+ "    ua.voteResult, COUNT(*) " 
+			+ "    ua.voteResult, COUNT(*) as total " 
 			+ "FROM " 
 			+ "    UserArtifact ua "
 			+ "WHERE ua.artifactId = :artifactId " 

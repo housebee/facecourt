@@ -2,6 +2,9 @@ package com.facecourt.webapp.persist;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.math.BigInteger;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -97,7 +100,34 @@ public class ArtifactDaoTest {
 //			assertThat(ua.getArtifact().getId() == artifact.getId());
 //			assertThat(ua.getVoteResult() == userArtifact.getVoteResult());
 //		}
+		
+		List<Object[]> allCasesWithCount = artifactDao.findAllWithCount();
+		
+		for (Object[] objList : allCasesWithCount) {
+			System.out.println(objList[0]);//id
+			System.out.println(objList[1]);//title
+			System.out.println(objList[2]);//description
+			System.out.println(objList[3]);//pos total
+			System.out.println(objList[4]);//neg total
+		}
+		
 
+		List<Object[]> existingArtifact = artifactDao.findArtifactWithCount(artifact.getId());
+		
+		System.out.println("------------retrieve artifact with votes---------------------");
+		
+		existingArtifact.stream().forEach((record) -> {
+			Artifact other = new Artifact();
+			other.setId((Long.valueOf((int)record[0])));
+			other.setTitle((String)record[1]);
+			other.setDesc((String)record[2]);
+			other.setTotalPos(((BigInteger)record[3]).longValue());
+			other.setTotalNeg(((BigInteger)record[4]).longValue());
+			
+			System.out.println(other);
+		});
+		
+		
 	}
 
 }

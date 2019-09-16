@@ -1,6 +1,7 @@
 package com.facecourt.webapp.service;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,8 +66,6 @@ public class ArtifactService {
 		// TODO: currently set all artifacts to only open court
 		artifact.setCourt(publicCourt);
 		artifact.setStatus(Boolean.TRUE);
-		artifact.setTotalPos(Long.valueOf(0));
-		artifact.setTotalNeg(Long.valueOf(0));
 		logger.info("before saving artifact = " + artifact);
 
 		Artifact result = artifactDao.save(artifact);
@@ -101,18 +100,20 @@ public class ArtifactService {
 	public List<Artifact> getAllArtifactsAndVotes() {
 		logger.info("getAllArtifactsAndVotes.");
 
-		List<Artifact> result = artifactDao.findAll();
-		for (Artifact artifact : result) {
-			// TODO: improve performance later with pagination.
-			Map<Long, Long> voteResultMap = getArtifactVoteNum(artifact);
-			if (voteResultMap != null) {
-				Long posVote = voteResultMap.get(Long.valueOf(VoteResultType.POSITIVE.getCode()));
-				Long negVote = voteResultMap.get(Long.valueOf(VoteResultType.NEGATIVE.getCode()));
-				artifact.setTotalPos(posVote == null ? Long.valueOf(0) : posVote);
-				artifact.setTotalNeg(negVote == null ? Long.valueOf(0) : negVote);
-			}
-			logger.info(" all artifact : " + artifact);
-		}
+		List<Artifact> result = new ArrayList<Artifact>();
+		
+		List<Object[]> allArtifactList = this.artifactDao.findAllWithCount();
+		allArtifactList.stream().forEach((record) -> {
+			Artifact artifact = new Artifact();
+			
+			artifact.setId((Long.valueOf((int)record[0])));
+			artifact.setTitle((String)record[1]);
+			artifact.setDesc((String)record[2]);
+			artifact.setTotalPos(((BigInteger)record[3]).longValue());
+			artifact.setTotalNeg(((BigInteger)record[4]).longValue());
+			
+			result.add(artifact);
+		});
 
 		logger.info("getAllArtifacts DONE.");
 		return result;
@@ -146,6 +147,28 @@ public class ArtifactService {
 		logger.info("getArtifactsByOwner DONE.");
 		return result;
 	}
+	
+	public Artifact updateArtifact(Artifact artifact) {
+		logger.info("updateArtifact. artifact = " + artifact);
+		
+		Artifact existing = artifactDao.getOne(artifact.getId());
+		
+		existing.setTitle(artifact.getTitle());
+		existing.setDesc(artifact.getDesc());
+		
+		Artifact updatedArtifact = artifactDao.save(existing);
+		
+		logger.info("updateArtifact.");
+		return updatedArtifact;
+	}
+	
+	public void deleteArtifactById(Long artifactId) {
+		logger.info("deleteArtifactById. artifactId = " + artifactId);
+		
+		artifactDao.delete(artifactId);
+		
+		logger.info("deleteArtifactById.");
+	}
 
 	/**
 	 * User votes for an artifact.
@@ -154,12 +177,19 @@ public class ArtifactService {
 	 * @param artifactId
 	 * @param voteResult
 	 */
-	public UserArtifact voteArtifact(String userName, Long artifactId, VoteResultType voteResult) {
+	public void voteArtifact(String userName, Long artifactId, VoteResultType voteResult) {
 		logger.info("Enter Service.voteArtifact. userName = " + userName + " artifactId = " + artifactId
 				+ " voteResult = " + voteResult);
 		User currentUser = userDao.findByUsername(userName);
 
 		Long userId = currentUser.getId();
+
+		this.voteArtifact(userId, artifactId, voteResult);
+	}
+	
+	public void voteArtifact(Long userId, Long artifactId, VoteResultType voteResult) {
+		logger.info("Enter Service.voteArtifact. userId = " + userId + " artifactId = " + artifactId
+				+ " voteResult = " + voteResult);
 
 		UserArtifactKey userArtifactKey = new UserArtifactKey();
 		userArtifactKey.setUserId(userId);
@@ -182,9 +212,36 @@ public class ArtifactService {
 			userArtifactDao.save(userArtifact);
 			logger.info("update existing userArtifact vote : " + userArtifact);
 		}
+		
+		logger.info("Completed voteArtifact. " + userArtifact);
+	}
+	
+	public Artifact findArtifactWithVotes(Long artifactId) {
+		Artifact artifact = null;
 
-		logger.info("Completed voteArtifact.");
-		return userArtifact;
+		List<Object[]> found = artifactDao.findArtifactWithCount(artifactId);
+		
+//		found.stream().forEach((record) -> {
+//			artifact.setId((Long.valueOf((int)record[0])));
+//			artifact.setTitle((String)record[1]);
+//			artifact.setDesc((String)record[2]);
+//			artifact.setTotalPos(((BigInteger)record[3]).longValue());
+//			artifact.setTotalNeg(((BigInteger)record[4]).longValue());
+//			logger.info("Found artifact with votes: " + artifact);
+//		});
+		
+		for (Object[] record : found) {
+			artifact = new Artifact();
+			artifact.setId((Long.valueOf((int)record[0])));
+			artifact.setTitle((String)record[1]);
+			artifact.setDesc((String)record[2]);
+			artifact.setTotalPos(((BigInteger)record[3]).longValue());
+			artifact.setTotalNeg(((BigInteger)record[4]).longValue());
+			logger.info("Found artifact with votes: " + artifact);
+			break; // should be only one found.
+		}
+
+		return artifact;
 	}
 
 	/**
@@ -193,10 +250,10 @@ public class ArtifactService {
 	 * @param artifact
 	 * @return
 	 */
-	public Map<Long, Long> getArtifactVoteNum(Artifact artifact) {
-		logger.info("Start getUserPosVoteNum. " + artifact);
+	public Map<Long, Long> getArtifactVoteNum(Long artifactId) {
+		logger.info("Start getUserPosVoteNum. " + artifactId);
 
-		List<Object[]> voteResult = userArtifactDao.findArtifactVoteNum(artifact.getId());
+		List<Object[]> voteResult = userArtifactDao.findArtifactVoteNum(artifactId);
 
 		Map<Long, Long> result = null;
 		if (voteResult != null && !voteResult.isEmpty()) {
@@ -210,5 +267,38 @@ public class ArtifactService {
 
 		logger.info("End getUserPosVoteNum.");
 		return result;
+	}
+	
+	public Artifact getArtifactVoteNumbers(String artifactId) {
+		logger.info("Start getArtifactVotes. " + artifactId);
+		List<Object[]> results = userArtifactDao.findArtifactVoteNum(Long.valueOf(artifactId));
+	
+		Artifact artifact = new Artifact();
+		
+		for(Object[] result: results) {
+			Long voteResult = (Long) result[0];
+			Long total = (Long) result[1];
+			if(Long.valueOf(0).equals(voteResult)) {
+				artifact.setTotalNeg(total);
+			} else if (Long.valueOf(2).equals(total)) {
+				artifact.setTotalPos(total);
+			}
+		}
+		
+		return artifact;
+	}
+	
+	public User createUser(User user) {
+		User savedUser = this.userDao.save(user);
+		return savedUser;
+	}
+	
+	public User getUserByUsername(String username) {
+		User user = this.userDao.findByUsername(username);
+		return user;
+	}
+	
+	public void getAll() {
+		this.artifactDao.findAllWithCount();
 	}
 }

@@ -13,7 +13,7 @@
 	$(document).ready(function() {
 		$(".likethumbImg").click(function(event) {
 			var artifactId = $(this).attr('artfactId');
-			var url = "/votePos/" + artifactId;
+			var url = "/api/v1/votePos/" + artifactId;
 
 			$.ajax({
 				type : "GET",
@@ -32,7 +32,7 @@
 
 		$(".dislikethumbImg").click(function(event) {
 			var artifactId = $(this).attr('artfactId');
-			var url = "/voteNeg/" + artifactId;
+			var url = "/api/v1/voteNeg/" + artifactId;
 
 			$.ajax({
 				type : "GET",

@@ -6,7 +6,7 @@ package com.facecourt.webapp.model;
  * @author suns
  */
 public enum VoteResultType {
-	POSITIVE (0), NEGATIVE(1), UNKNOWN(2);
+	NEGATIVE(-1), UNKNOWN(0), POSITIVE (1);
 	
 	private final int code;
 	
