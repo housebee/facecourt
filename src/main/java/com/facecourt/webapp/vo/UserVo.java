@@ -2,7 +2,7 @@ package com.facecourt.webapp.vo;
 
 public class UserVo {
 
-	private String uid;
+	private String id;
 
 	private String email;
 
@@ -10,12 +10,12 @@ public class UserVo {
 
 	private String displayName;
 
-	public String getUid() {
-		return uid;
+	public String getId() {
+		return id;
 	}
 
-	public void setUid(String uid) {
-		this.uid = uid;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getEmail() {
@@ -44,7 +44,7 @@ public class UserVo {
 
 	@Override
 	public String toString() {
-		return "UserVo [uid=" + uid + ", email=" + email + ", emailVerified=" + emailVerified + ", displayName="
+		return "UserVo [id=" + id + ", email=" + email + ", emailVerified=" + emailVerified + ", displayName="
 				+ displayName + "]";
 	}
 

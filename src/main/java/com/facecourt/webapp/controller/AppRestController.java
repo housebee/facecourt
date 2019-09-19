@@ -61,7 +61,7 @@ public class AppRestController {
 				logger.info("created user: " + user);
 			}
 
-			userVo.setUid(user.getId().toString());
+			userVo.setId(user.getId().toString());
 		} else {
 			logger.error("Email is required for new user.");
 		}
