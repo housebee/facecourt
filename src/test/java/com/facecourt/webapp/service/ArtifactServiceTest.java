@@ -3,8 +3,6 @@ package com.facecourt.webapp.service;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -50,6 +48,7 @@ public class ArtifactServiceTest {
 		artifact.setDesc("description");
 
 		artifactService.createArtifact(artifact, "admin");
+//		artifactService.createArtifact(artifact, 2L);
 
 		user = new User();
 		user.setEmailVerified(Boolean.FALSE);
@@ -68,6 +67,7 @@ public class ArtifactServiceTest {
 		artifact.setDesc("new artifact");
 		artifact.setTitle("new title");
 		artifactService.createArtifact(artifact, "admin");
+//		artifactService.createArtifact(artifact, 2L);
 
 		assertTrue("created artifact. ", artifact.getId() != null);
 

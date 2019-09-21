@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.facecourt.webapp.model.Artifact;
 import com.facecourt.webapp.model.User;
+import com.facecourt.webapp.model.UserProviderType;
 import com.facecourt.webapp.model.VoteResultType;
 import com.facecourt.webapp.service.ArtifactService;
 import com.facecourt.webapp.util.AppUtil;
@@ -55,7 +56,9 @@ public class AppRestController {
 			if (user == null) {
 				user = new User();
 				user.setUsername(email);
-				user.setPassword("sugar");
+				user.setPassword("ssun");
+				user.setProviderType(UserProviderType.FACEBOOK);
+				user.setActive(Boolean.TRUE);
 
 				user = this.artifactService.createUser(user);
 				logger.info("created user: " + user);
@@ -152,10 +155,11 @@ public class AppRestController {
 		return artifact;
 	}
 
-	@RequestMapping(value = "/artifacts/{userId}/", method = RequestMethod.POST)
+	//@RequestMapping(value = "/artifacts/{userId}/", method = RequestMethod.POST) // NOTE: /artifacts/{userId}/ the "/" at the end accepts more chars used in userId, such as "."
+	@RequestMapping(value = "/artifacts/{userId}", method = RequestMethod.POST)
 	public Artifact createArtifact(@PathVariable(value = "userId") String userId, @RequestBody Artifact artifact) {
 		logger.info("createArtifact, artifact = " + artifact);
-		Artifact result = this.artifactService.createArtifact(artifact, userId);
+		Artifact result = this.artifactService.createArtifact(artifact, Long.valueOf(userId));
 		logger.info("createArtifact DONE, artifact = " + artifact);
 		return result;
 	}

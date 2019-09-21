@@ -23,3 +23,4 @@ dist/
 nbdist/
 .nb-gradle/
 /bin/
+/gs-spring-boot-0.1.0.7z

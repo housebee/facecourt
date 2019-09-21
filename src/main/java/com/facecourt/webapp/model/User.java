@@ -118,6 +118,10 @@ public class User {
 		return active;
 	}
 
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();

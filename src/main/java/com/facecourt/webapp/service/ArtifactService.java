@@ -44,13 +44,29 @@ public class ArtifactService {
 		super();
 	}
 
-	/**
-	 * Create a artifact
-	 * 
-	 * @param artifact
-	 * @param owner
-	 * @return
-	 */
+	public Artifact createArtifact(Artifact artifact, Long userId) {
+		logger.info("create artifact = " + artifact + " by user = " + userId);
+
+		User owner = userDao.findOne(userId);
+		logger.info("find owner = " + owner);
+
+		// Court publicCourt = courtDao.findOne(Court.PUBLIC_COURT_ID); // problem with
+		// spring-boot 2
+		Court publicCourt = courtDao.getOne(Court.PUBLIC_COURT_ID);
+		logger.info("public court = " + publicCourt);
+
+		artifact.setOwner(owner);
+		// TODO: currently set all artifacts to only open court
+		artifact.setCourt(publicCourt);
+		artifact.setStatus(Boolean.TRUE);
+		logger.info("before saving artifact = " + artifact);
+
+		Artifact result = artifactDao.save(artifact);
+
+		logger.info("saved artifact =  " + result);
+		return result;
+	}
+	
 	public Artifact createArtifact(Artifact artifact, String userName) {
 		logger.info("create artifact = " + artifact + " by user = " + userName);
 
@@ -165,7 +181,8 @@ public class ArtifactService {
 	public void deleteArtifactById(Long artifactId) {
 		logger.info("deleteArtifactById. artifactId = " + artifactId);
 		
-		artifactDao.delete(artifactId);
+		this.userArtifactDao.deleteVotesByArtifactId(artifactId);
+		this.artifactDao.delete(artifactId);
 		
 		logger.info("deleteArtifactById.");
 	}
