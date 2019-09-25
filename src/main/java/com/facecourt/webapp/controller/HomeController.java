@@ -47,14 +47,14 @@ public class HomeController {
 		List<Artifact> artifacts = artifactService.getAllArtifactsAndVotes();
 
 		model.addAttribute("artifacts", artifacts);
-		return "/index";
+		return "index";
 	}
 
 	@RequestMapping(value = "/newCase", method = RequestMethod.GET)
 	public String newCase(HttpServletRequest request, Model model) {
 		logger.info("create new case.");
 		model.addAttribute("caseForm", new CaseForm());
-		return "/newCase";
+		return "newCase";
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class HomeController {
 		model.addAttribute("artifacts", result);
 
 		logger.info("get my artifacts.");
-		return "/myCase";
+		return "myCase";
 	}
 
 	/**
@@ -120,7 +120,7 @@ public class HomeController {
 		model.addAttribute("artifact", artifact);
 
 		logger.info("edit my artifact.");
-		return "/editCase";
+		return "editCase";
 	}
 
 	@RequestMapping(value = "update", method = RequestMethod.POST)

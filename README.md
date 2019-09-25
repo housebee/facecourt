@@ -35,10 +35,19 @@
 This shows how to run a Spring Boot application on Google Cloud Platform. It uses the Google App Engine flexible environment.
 
 Before you begin
-This sample assumes you have Java 8 installed.
+This project assumes you have Java 8 installed.
 
 Download Maven
 These samples use the Apache Maven build system. Before getting started, be sure to download and install it. When you use Maven as described here, it will automatically download the needed client libraries.
+
+Run application:
+1. java -jar target\webapp-0.0.1.jar
+
+Debug application:
+start application in DOS console.
+1. java -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=5005,suspend=n -jar target\webapp-0.0.1.jar
+2. eclipse remote debug with port of 5005
+
 
 Create a Project in the Google Cloud Platform Console
 If you haven't already created a project, create one now. Projects enable you to manage all Google Cloud Platform resources for your app, including deployment, access control, billing, and services.
